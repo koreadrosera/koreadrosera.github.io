@@ -1,7 +1,27 @@
 import React, { useState } from 'react';
 
 const categoryData = {
-  // 데이터 생략
+  // 샘플 데이터
+  'flytrap1': {
+    title: '파리지옥',
+    products: [
+      {
+        image: 'https://i.imgur.com/CEd0gCZ.jpg',
+        name: 'Alien',
+        price: '55,000원',
+      },
+      {
+        image: 'https://i.imgur.com/1Nng5KK.jpg',
+        name: 'Sawtooth piranha',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/vzDXObs.jpg',
+        name: 'GJ Giant Cudo',
+        price: '55,000원',
+      },
+    ],
+  },
 };
 
 const PlantMart = () => {
@@ -51,30 +71,18 @@ const PlantMart = () => {
               alt={product.name}
               className="w-full h-full object-cover rounded"
               onError={(e) => {
-                e.target.src = "/api/placeholder/200/200";
+                e.target.src = '/api/placeholder/200/200';
               }}
             />
           </div>
           <div className="flex flex-col justify-center ml-5">
-            <h3 className="text-lg font-medium mb-2">{product.name}</h3>
-            <p className="text-gray-900 font-bold text-lg">{product.price}</p>
+            <h3 className="text-lg font-medium mb-2">{product.name || '상품 이름 없음'}</h3>
+            <p className="text-gray-900 font-bold text-lg">{product.price || '가격 정보 없음'}</p>
           </div>
         </div>
       ))}
     </div>
   );
-
-  const CategoryDescription = ({ description, description2, description3 }) => {
-    if (!description && !description2 && !description3) return null;
-
-    return (
-      <div className="bg-gray-100 p-5 rounded-lg max-w-3xl mx-auto mb-5">
-        {description && <p className="mb-2">{description}</p>}
-        {description2 && <p className="mb-2">{description2}</p>}
-        {description3 && <p>{description3}</p>}
-      </div>
-    );
-  };
 
   const HomeButton = () => (
     <button
@@ -85,36 +93,29 @@ const PlantMart = () => {
     </button>
   );
 
-  const currentCategoryData = currentCategory ? categoryData[currentCategory.id] : null;
+ const currentCategoryData = currentCategory ? categoryData[currentCategory.id ] : null;
 
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Navigation />
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4">
-        {!currentCategory ? (
-          <OrderGuide />
-        ) : (
-          <>
-            <h2 className="text-2xl text-center text-gray-800 my-5">
-              {currentCategoryData?.title}
-            </h2>
-            <CategoryDescription
-              description={currentCategoryData?.description}
-              description2={currentCategoryData?.description2}
-              description3={currentCategoryData?.description3}
-            />
-            {currentCategoryData?.products?.length > 0 ? (
-              <ProductList products={currentCategoryData.products} />
-            ) : (
-              <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
-            )}
-            <OrderGuide />
-          </>
-        )}
-        {currentCategory && <HomeButton />}
-      </main>
-    </div>
-  );
+ 반품 (
+ <div className="min-h-스크린 플렉스-콜 bg-화이트">
+ <내비게이션 />
+ <main className="flex-1 max-w-7 xl mx-auto w-full px-4">
+ {!현재 카테고리 ?
+ <주문 가이드 />
+ ) : (
+ <>
+ <h2 className="text-2xl text-center text-gray-800 my-5">{currentCategoryData?제목}//h2>
+ 현재 카테고리 데이터?제품?길이 > 0? (
+ <ProductList products={currentCategoryData.products} />
+ ) : (
+ <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
+ )}
+ <주문 가이드 />
+ </>
+ )}
+ {현재 카테고리 & & <홈 버튼 />}
+ </메인>
+ </div>
+ );
 };
 
-export default PlantMart;
+기본 PlantMart 내보내기;
