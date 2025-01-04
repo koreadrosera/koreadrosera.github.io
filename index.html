@@ -1,356 +1,12 @@
 import React, { useState } from 'react';
 
 const categoryData = {
-  'tissue-culture': {
-    title: '식충식물 조직배양튜브',
-    products: [
-      {
-        image: 'https://i.imgur.com/wvW729L.jpg',
-        name: '끈끈이주걱 조직배양튜브 Hartmeyorum',
-        price: '50,000원'
-      },
-      {
-        image: 'https://i.imgur.com/9PROx6c.jpg',
-        name: '파리지옥 조직배양튜브 B52',
-        price: '50,000원'
-      },
-      {
-        image: 'https://i.imgur.com/J9zPnDz.jpg',
-        name: '벌레잡이제비꽃 조직배양튜브 moranensis, primuliflora',
-        price: '50,000원'
-      },
-      {
-        image: 'https://i.imgur.com/YRUSzB7.jpg',
-        name: 'Dionaea buttcheeks',
-        price: '준비중.'
-      }
-    ]
-  },
-  'flytrap1': {
-    title: '파리지옥',
-    products: [
-      {
-        image: 'https://i.imgur.com/CEd0gCZ.jpg',
-        name: 'Alien',
-        price: '55,000원'
-      },
-      {
-        image: 'https://i.imgur.com/1Nng5KK.jpg',
-        name: 'Sawtooth piranha',
-        price: '45,000원'
-      },
-      {
-        image: 'https://i.imgur.com/vzDXObs.jpg',
-        name: 'GJ Giant Cudo',
-        price: '55,000원'
-      }
-    ]
-  },
-  'flytrap2': {
-    title: '파리지옥2',
-    products: [
-      {
-        image: 'https://i.imgur.com/fpTpBcw.jpg',
-        name: 'DCXL',
-        price: '40,000원'
-      },
-      {
-        image: 'https://i.imgur.com/d57WhSf.jpg',
-        name: 'Wacky Traps',
-        price: '50,000원'
-      },
-      {
-        image: 'https://i.imgur.com/vFLzIha.jpg',
-        name: 'Buttcheeks',
-        price: '50,000원'
-      }
-    ]
-  },
-  'sundew': {
-    title: '끈끈이주걱',
-    products: [
-      {
-        image: 'https://imgur.com/OTcv1lh.jpg',
-        name: 'Latifolia',
-        price: '45,000원'
-      },
-      {
-        image: 'https://imgur.com/EE401G4.jpg',
-        name: 'Regia',
-        price: '55,000원'
-      },
-      {
-        image: 'https://imgur.com/HkzKvco.jpg',
-        name: 'Hamiltonii',
-        price: '25,000원'
-      },
-      {
-        image: 'https://imgur.com/N0LTVKj.jpg',
-        name: 'Binata',
-        price: '15,000원'
-      },
-      {
-        image: 'https://imgur.com/JZunbC1.jpg',
-        name: 'Hercules',
-        price: '35,000원'
-      },
-      {
-        image: 'https://imgur.com/9fF0pXx.jpg',
-        name: 'Andromeda',
-        price: '45,000원'
-      },
-      {
-        image: 'https://imgur.com/JdBaDL9.jpg',
-        name: 'Intermedia hybrid',
-        price: '35,000원'
-      },
-      {
-        image: 'https://imgur.com/vIjpkoH.jpg',
-        name: 'Intermedia alba',
-        price: '17,000원'
-      },
-      {
-        image: 'https://imgur.com/gqzzNPo.jpg',
-        name: 'Tomentosa x Tentacul',
-        price: '45,000원'
-      }
-    ]
-  },
-  'nepenthes1': {
-    title: '네펜데스',
-    products: [
-      {
-        image: 'https://imgur.com/SW1jScT.jpg',
-        name: 'Lowii x Ventricosa',
-        price: '준비중'
-      },
-      {
-        image: 'https://imgur.com/8kEv5Dj.jpg',
-        name: 'singalana',
-        price: '준비중'
-      },
-      {
-        image: 'https://imgur.com/eg8xjCr.jpg',
-        name: 'Albomarginata',
-        price: '85,000원'
-      },
-      {
-        image: 'https://imgur.com/fx8aJRI.jpg',
-        name: 'Albomarginata Northwestern Peninsular Malaysia',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/QYB89Ms.jpg',
-        name: 'Bicalcarata',
-        price: '75,000원'
-      },
-      {
-        image: 'https://imgur.com/LAriH9k.jpg',
-        name: 'Mirabilis red',
-        price: '75,000원'
-      },
-      {
-        image: 'https://imgur.com/NAv2V47.jpg',
-        name: 'Hemsleyana Upper pitcher',
-        price: '95,000원'
-      },
-      {
-        image: 'https://imgur.com/ZwqKhuj.jpg',
-        name: 'maxima mini',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/Hm0iCvd.jpg',
-        name: 'Lowii x Ventricosa',
-        price: '85,000원'
-      },
-      {
-        image: 'https://imgur.com/wQXmD8T.jpg',
-        name: 'Lady Luck(ampullaria x ventricosa)',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/pHAi7Z2.jpg',
-        name: 'Miranda',
-        price: '57,000원'
-      },
-      {
-        image: 'https://imgur.com/h6DiNa3.jpg',
-        name: 'Gracilis black',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/ZlGBUUL.jpg',
-        name: 'Gracilis',
-        price: '준비중.'
-      }
-    ]
-  },
-  'nepenthes2': {
-    title: '네펜데스2',
-    products: [
-      {
-        image: 'https://imgur.com/hOx9Qrc.jpg',
-        name: 'Viking',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/23fxkc3.jpg',
-        name: 'Rafflesiana',
-        price: '85,000원'
-      },
-      {
-        image: 'https://imgur.com/5svsMHI.jpg',
-        name: 'Ventricosa Northern part of quezon province',
-        price: '85,000원'
-      },
-      {
-        image: 'https://imgur.com/tiKsP2C.jpg',
-        name: 'Suratensis from Thailand',
-        price: '75,000원'
-      },
-      {
-        image: 'https://imgur.com/zNUC1B5.jpg',
-        name: 'Veitchii golden peristome',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/PXdur32.jpg',
-        name: 'Mirabilis',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/kIKTowJ.jpg',
-        name: 'ventricosa x talang',
-        price: '60,000원'
-      }
-    ]
-  },
-  'nepenthes3': {
-    title: '네펜데스3',
-    products: [
-      {
-        image: 'https://imgur.com/TqR9ogo.jpg',
-        name: 'Talangdig',
-        price: '85,000원'
-      },
-      {
-        image: 'https://imgur.com/ceib8uO.jpg',
-        name: 'Truncata',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/eHp1EWP.jpg',
-        name: 'reinwardtiana',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/U64hxEr.jpg',
-        name: 'mirabilis "wavy leaf"',
-        price: '준비중.'
-      },
-      {
-        image: 'https://imgur.com/efR1BHb.jpg',
-        name: 'sanguinea',
-        price: '준비중.'
-      },
-      {
-        image: 'https://imgur.com/EQ7SET0.jpg',
-        name: 'jacquelineae',
-        price: '준비중.'
-      },
-      {
-        image: 'https://imgur.com/1FznWEH.jpg',
-        name: 'glabrata',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/E5w28WA.jpg',
-        name: 'lowii x ventricosa',
-        price: '85,000원'
-      }
-    ]
-  },
-  'nepenthes4': {
-    title: '네펜데스4',
-    products: [
-      {
-        image: 'https://imgur.com/7OmtOKE.jpg',
-        name: 'Lowii',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/brqFGrn.jpg',
-        name: 'Clipata',
-        price: '준비중'
-      },
-      {
-        image: 'https://imgur.com/BviL1LO.jpg',
-        name: 'viking x benstonei',
-        price: '60,000원'
-      },
-      {
-        image: 'https://imgur.com/lTBV89q.jpg',
-        name: 'Gaya',
-        price: '85,000원'
-      },
-      {
-        image: 'https://imgur.com/c3yOEy0.jpg',
-        name: 'andamana',
-        price: '75,000원'
-      },
-      {
-        image: 'https://imgur.com/3lFyKYr.jpg',
-        name: 'ventricosa Mt. Mayon, Southern part, Philippines',
-        price: '준비중'
-      }
-    ]
-  },
-  'nepenthes-ampullaria': {
-    title: '네펜데스 앰풀라리아',
-    products: [
-      {
-        image: 'https://imgur.com/6AqzIBR.jpg',
-        name: 'Red speckled & Lime Twist',
-        price: '준비중.'
-      },
-      {
-        image: 'https://imgur.com/7TW6NBH.jpg',
-        name: 'Red Speckled (IT)',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/uQxyvqI.jpg',
-        name: 'Purple',
-        price: '85,000원'
-      },
-      {
-        image: 'https://imgur.com/AV4jWw9.jpg',
-        name: 'Viking x Ampullaria Black Miracle',
-        price: '95,000원'
-      },
-      {
-        image: 'https://imgur.com/OZUf6qf.jpg',
-        name: 'Ampullaria Hot Lips',
-        price: '준비중 125,000원'
-      },
-      {
-        image: 'https://imgur.com/YiIJaZf.jpg',
-        name: 'Lime Twist(3-1?)',
-        price: '65,000원'
-      },
-      {
-        image: 'https://imgur.com/GHAKxBc.jpg',
-        name: 'Lime(Bau) Green',
-        price: '65,000원'
-      }
-    ]
-  },
+  // 데이터 생략
 };
-// categoryData 객체를 따로 작성
+
 const PlantMart = () => {
   const [currentCategory, setCurrentCategory] = useState(null);
-  
+
   const Navigation = () => (
     <nav className="bg-white border-b border-gray-200 py-5">
       <h1 className="text-2xl text-center mb-4">식충식물마트</h1>
@@ -359,7 +15,9 @@ const PlantMart = () => {
           <button
             key={id}
             onClick={() => setCurrentCategory({ id, name: data.title })}
-            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm hover:bg-gray-200 transition-colors whitespace-nowrap ${currentCategory?.id === id ? 'bg-gray-800 text-white' : ''}`}
+            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm hover:bg-gray-200 transition-colors whitespace-nowrap ${
+              currentCategory?.id === id ? 'bg-gray-800 text-white' : ''
+            }`}
           >
             {data.title}
           </button>
@@ -408,7 +66,7 @@ const PlantMart = () => {
 
   const CategoryDescription = ({ description, description2, description3 }) => {
     if (!description && !description2 && !description3) return null;
-    
+
     return (
       <div className="bg-gray-100 p-5 rounded-lg max-w-3xl mx-auto mb-5">
         {description && <p className="mb-2">{description}</p>}
@@ -432,32 +90,31 @@ const PlantMart = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navigation />
-      
       <main className="flex-1 max-w-7xl mx-auto w-full px-4">
- {!현재 카테고리 ?
- <주문 가이드 />
- ) : (
- <>
- <h2 className="text-2xl text-center text-gray-800 my-5">
- 현재 카테고리 데이터?제목}
- </h2>
- <카테고리설명 
- description={currentCategoryData?}설명}
- description2={currentCategoryData?}설명2}
- description3={currentCategoryData?}설명3}
+        {!currentCategory ? (
+          <OrderGuide />
+        ) : (
+          <>
+            <h2 className="text-2xl text-center text-gray-800 my-5">
+              {currentCategoryData?.title}
+            </h2>
+            <CategoryDescription
+              description={currentCategoryData?.description}
+              description2={currentCategoryData?.description2}
+              description3={currentCategoryData?.description3}
             />
- 현재 카테고리 데이터?제품? (
- <ProductList products={currentCategoryData.products} />
- ) : (
- <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
- )}
- <주문 가이드 />
- </>
- )}
- {현재 카테고리 & & <홈 버튼 />}
- </메인>
- </div>
- );
+            {currentCategoryData?.products?.length > 0 ? (
+              <ProductList products={currentCategoryData.products} />
+            ) : (
+              <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
+            )}
+            <OrderGuide />
+          </>
+        )}
+        {currentCategory && <HomeButton />}
+      </main>
+    </div>
+  );
 };
 
-기본 PlantMart 내보내기;
+export default PlantMart;
