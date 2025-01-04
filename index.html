@@ -1,117 +1,244 @@
-import React, { useState } from 'react';
-
-// React 컴포넌트와 categoryData를 나눠서 선언
-// categoryData 객체를 따로 작성
-const PlantMart = () => {
-  const [currentCategory, setCurrentCategory] = useState(null);
-  
-  const Navigation = () => (
-    <nav className="bg-white border-b border-gray-200 py-5">
-      <h1 className="text-2xl text-center mb-4">식충식물마트</h1>
-      <div className="flex flex-wrap gap-2 justify-center px-4 max-w-7xl mx-auto overflow-x-auto py-2">
-        {Object.entries(categoryData).map(([id, data]) => (
-          <button
-            key={id}
-            onClick={() => setCurrentCategory({ id, name: data.title })}
-            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm hover:bg-gray-200 transition-colors whitespace-nowrap ${currentCategory?.id === id ? 'bg-gray-800 text-white' : ''}`}
-          >
-            {data.title}
-          </button>
-        ))}
-      </div>
-    </nav>
-  );
-
-  const OrderGuide = () => (
-    <div className="bg-gray-100 rounded-lg p-5 max-w-3xl mx-auto mt-10">
-      <h2 className="text-lg font-bold mb-4 pb-2 border-b border-gray-300">식충식물마트 주문하기</h2>
-      <ol className="list-decimal ml-5 mb-4">
-        <li className="mb-2">주문 목록</li>
-        <li className="mb-2">주소</li>
-        <li className="mb-2">이름</li>
-        <li className="mb-2">핸드폰 번호를 작성해서 아래 "핸드폰 문자"로 보내주세요</li>
-      </ol>
-      <div className="bg-gray-200 p-3 text-center rounded">
-        핸드폰: 010 5045 5507
-      </div>
-    </div>
-  );
-
-  const ProductList = ({ products = [] }) => (
-    <div className="flex flex-col gap-5 p-5 max-w-3xl mx-auto">
-      {products.map((product, index) => (
-        <div key={index} className="flex border border-gray-200 rounded-lg p-4 bg-white shadow-sm">
-          <div className="w-48 h-48 flex-shrink-0">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover rounded"
-              onError={(e) => {
-                e.target.src = "/api/placeholder/200/200";
-              }}
-            />
-          </div>
-          <div className="flex flex-col justify-center ml-5">
-            <h3 className="text-lg font-medium mb-2">{product.name}</h3>
-            <p className="text-gray-900 font-bold text-lg">{product.price}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  const CategoryDescription = ({ description, description2, description3 }) => {
-    if (!description && !description2 && !description3) return null;
-    
-    return (
-      <div className="bg-gray-100 p-5 rounded-lg max-w-3xl mx-auto mb-5">
-        {description && <p className="mb-2">{description}</p>}
-        {description2 && <p className="mb-2">{description2}</p>}
-        {description3 && <p>{description3}</p>}
-      </div>
-    );
-  };
-
-  const HomeButton = () => (
-    <button
-      onClick={() => setCurrentCategory(null)}
-      className="fixed bottom-5 right-5 bg-gray-800 text-white px-5 py-2 rounded shadow-md hover:bg-gray-700 transition-colors"
-    >
-      메인으로
-    </button>
-  );
-
-  const currentCategoryData = currentCategory ? categoryData[currentCategory.id] : null;
-
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Navigation />
-      
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4">
- {!현재 카테고리 ?
- <주문 가이드 />
- ) : (
- <>
- <h2 className="text-2xl text-center text-gray-800 my-5">
- 현재 카테고리 데이터?제목}
- </h2>
- <카테고리설명 
- description={currentCategoryData?}설명}
- description2={currentCategoryData?}설명2}
- description3={currentCategoryData?}설명3}
-            />
- 현재 카테고리 데이터?제품? (
- <ProductList products={currentCategoryData.products} />
- ) : (
- <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
- )}
- <주문 가이드 />
- </>
- )}
- {현재 카테고리 & & <홈 버튼 />}
- </메인>
- </div>
- );
+const categoryData = {
+  'tissue-culture': {
+    title: '식충식물 조직배양튜브',
+    products: [
+      {
+        image: 'https://i.imgur.com/wvW729L.jpg',
+        name: '끈끈이주걱 조직배양튜브 Hartmeyorum',
+        price: '50,000원',
+      },
+      {
+        image: 'https://i.imgur.com/9PROx6c.jpg',
+        name: '파리지옥 조직배양튜브 B52',
+        price: '50,000원',
+      },
+      {
+        image: 'https://i.imgur.com/J9zPnDz.jpg',
+        name: '벌레잡이제비꽃 조직배양튜브 moranensis, primuliflora',
+        price: '50,000원',
+      },
+      {
+        image: 'https://i.imgur.com/YRUSzB7.jpg',
+        name: 'Dionaea buttcheeks',
+        price: '준비중.',
+      },
+    ],
+  },
+  'flytrap1': {
+    title: '파리지옥',
+    products: [
+      {
+        image: 'https://i.imgur.com/CEd0gCZ.jpg',
+        name: 'Alien',
+        price: '55,000원',
+      },
+      {
+        image: 'https://i.imgur.com/1Nng5KK.jpg',
+        name: 'Sawtooth piranha',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/vzDXObs.jpg',
+        name: 'GJ Giant Cudo',
+        price: '55,000원',
+      },
+      {
+        image: 'https://i.imgur.com/Wsjaf50.jpg',
+        name: 'Scarlatine',
+        price: '55,000원',
+      },
+      {
+        image: 'https://i.imgur.com/OOHmme9.jpg',
+        name: 'Trev s Dracula',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/QeuYkDt.jpg',
+        name: 'Korean Melody Shark',
+        price: '40,000원',
+      },
+      {
+        image: 'https://i.imgur.com/Zjet1eI.jpg',
+        name: 'Biohazard',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/sJQ2oCk.jpg',
+        name: 'Bristletooth',
+        price: '50,000원',
+      },
+      {
+        image: 'https://i.imgur.com/i3wcdrx.jpg',
+        name: 'Fused Tooth',
+        price: '준비중.',
+      },
+      {
+        image: 'https://i.imgur.com/wvUZhqM.jpg',
+        name: 'Cupped trap',
+        price: '40,000원',
+      },
+      {
+        image: 'https://i.imgur.com/uMDH9hh.jpg',
+        name: 'Schupenstiel',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/xHSNPDd.jpg',
+        name: 'Rose(No trap)',
+        price: '40,000원',
+      },
+      {
+        image: 'https://i.imgur.com/IqcDIk8.jpg',
+        name: 'Coquillage',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/iXnez7X.jpg',
+        name: 'Fuzzy Tooth',
+        price: '40,000원',
+      },
+      {
+        image: 'https://i.imgur.com/xyRIXsa.jpg',
+        name: 'Mirror',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/FWyPQtU.jpg',
+        name: 'Angel wings',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/3jbmG2M.jpg',
+        name: 'Saw Tooth',
+        price: '45,000원',
+      },
+    ],
+  },
+  'flytrap2': {
+    title: '파리지옥2',
+    products: [
+      {
+        image: 'https://i.imgur.com/fpTpBcw.jpg',
+        name: 'DCXL',
+        price: '40,000원',
+      },
+      {
+        image: 'https://i.imgur.com/d57WhSf.jpg',
+        name: 'Wacky Traps',
+        price: '50,000원',
+      },
+      {
+        image: 'https://i.imgur.com/vFLzIha.jpg',
+        name: 'Buttcheeks',
+        price: '50,000원',
+      },
+      {
+        image: 'https://i.imgur.com/P9bt6kp.jpg',
+        name: 'B52',
+        price: '40,000원',
+      },
+      {
+        image: 'https://i.imgur.com/Dvmojfu.jpg',
+        name: 'Schupenstiel',
+        price: '45,000원',
+      },
+      {
+        image: 'https://i.imgur.com/p5hHHPJ.jpg',
+        name: 'Akay Ryu',
+        price: '45,000원',
+      },
+    ],
+  },
+  'sundew': {
+    title: '끈끈이주걱',
+    products: [
+      {
+        image: 'https://imgur.com/a/OTcv1lh.jpg',
+        name: 'Latifolia',
+        price: '45,000원',
+      },
+      {
+        image: 'https://imgur.com/a/EE401G4.jpg',
+        name: 'Regia',
+        price: '55,000원',
+      },
+      {
+        image: 'https://imgur.com/a/HkzKvco.jpg',
+        name: 'Hamiltonii',
+        price: '25,000원',
+      },
+      {
+        image: 'https://imgur.com/a/N0LTVKj.jpg',
+        name: 'Binata',
+        price: '15,000원',
+      },
+      {
+        image: 'https://imgur.com/a/JZunbC1.jpg',
+        name: 'Hercules',
+        price: '35,000원',
+      },
+    ],
+  },
+  'cephalotus': {
+    title: '세팔로투스',
+    products: [
+      {
+        image: 'https://imgur.com/kM4WkfT.jpg',
+        name: 'Cephalotus',
+        price: '40,000원',
+      },
+      {
+        image: 'https://imgur.com/8bpSEgi.jpg',
+        name: 'Big Boy',
+        price: '45,000원',
+      },
+      {
+        image: 'https://imgur.com/N1iGS6x.jpg',
+        name: 'Eden Black',
+        price: '준비중150,000원',
+      },
+      {
+        image: 'https://imgur.com/krt8zWv.jpg',
+        name: "Charles Brewer's",
+        price: '95,000원',
+      },
+      {
+        image: 'https://imgur.com/GGXgUzb.jpg',
+        name: "Hummer's Giant",
+        price: '95,000원',
+      },
+    ],
+  },
+  'supplies': {
+    title: '원예재제, 생수태',
+    products: [
+      {
+        image: 'https://imgur.com/ukJkxJc.jpg',
+        name: '생수태',
+        price: '10,000원',
+ },
+ {
+ 이미지: './.images/supplies_3.jpg',
+ name: '피트모스 배양토',
+ 가격: '20 x 25cm 지퍼백, 3,000 원'
+ },
+ {
+ 이미지: './.images/supplies_6.jpg',
+ name: '하이포넥스(식물영양제)',
+ 가격: '2,000 원/10g',
+ },
+ ],
+ },
+ '돌봄': {
+ title: '식충식물재배책',
+ 제품: [
+ {
+ 이미지: 'https://i.imgur.com/6Fd2V8K.jpg',
+ name: '식충식물재배책',
+ 가격: '23,000 원',
+ },
+ ],
+ },
 };
 
-기본 PlantMart 내보내기;
+기본 카테고리 데이터 내보내기;
