@@ -1,1739 +1,246 @@
-<!DOCTYPE HTML>
-<html lang="ko">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>식충식물마트</title>
-   <style>
-       * {
-           margin: 0;
-           padding: 0;
-           box-sizing: border-box;
-       }
+import React, { useState } from 'react';
 
-       body {
-           font-family: Arial, sans-serif;
-           min-height: 100vh;
-           display: flex;
-           flex-direction: column;
-       }
-
-       .nav {
-           background-color: #fff;
-           border-bottom: 1px solid #ddd;
-           padding: 20px;
-       }
-
-       .nav h1 {
-           font-size: 24px;
-           margin-bottom: 10px;
-           text-align: center;
-       }
-
-       .menu {
-           display: flex;
-           flex-wrap: wrap;
-           gap: 10px;
-           justify-content: center;
-           padding: 15px;
-           max-width: 1400px;
-           margin: 0 auto;
-       }
-       
-       .menu-item {
-           background-color: #f8f8f8;
-           border-radius: 4px;
-           padding: 8px 15px;
-           text-align: center;
-           min-width: 120px;
-           cursor: pointer;
-           border: none;
-           font-size: 14px;
-       }
-
-       .menu-item:hover {
-           background-color: #f0f0f0;
-       }
-
-       .main-content {
-           flex: 1;
-           padding: 20px;
-           max-width: 1200px;
-           margin: 0 auto;
-           width: 100%;
-       }
-
-       /* 그리드 뷰 스타일 */
-       .grid-view {
-           display: grid;
-           grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-           gap: 20px;
- 패딩: 20 px;
-       }
-
- .grid-항목 {
- 경계: 1 px 고체 #ee;
- 국경 radius: 8 px;
- 오버플로: 숨겨진;
- 배경: 흰색;
- box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-       }
-
- .grid-item img {
- 너비: 100%;
- 높이: 250 px;
- 객체 맞춤: 커버;
-       }
-
- .grid-item-info {
- 패딩: 15 px;
-       }
-
- .grid-item-info h3 {
- 마진 바닥: 8 px;
- 글꼴 크기: 16 px;
-       }
-
- .grid-item-info p {
- 색상: #333;
- 글꼴 무게: 굵게;
-       }
-
-       /* 리스트 뷰 스타일 */
- .list-view {
- 디스플레이: 플렉스;
- 플렉스 direction: 열;
- 갭: 20 px;
- 패딩: 20 px;
- 최대 너비: 900 px;
- 여백: 0 auto;
-       }
-
- .리스트 항목 {
- 디스플레이: 플렉스;
- 경계: 1 px 고체 #ee;
- 국경 radius: 8 px;
- 패딩: 15 px;
- 배경: 흰색;
- box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-       }
-
- .list-item img {
- 너비: 200 px;
- 높이: 200 px;
- 객체 맞춤: 커버;
- 마진 라이트: 20 px;
- 국경 radius: 4 px;
-       }
-
- .list-item-info {
- 플렉스: 1;
- 디스플레이: 플렉스;
- 플렉스 direction: 열;
- 정당화 내용: 중심;
-       }
-
- .list-item-info h3 {
- 마진 바닥: 10 px;
- 글꼴 크기: 18 px;
-       }
-
- .list-item-info p {
- 색상: #333;
- 글꼴 무게: 굵게;
- 글꼴 크기: 16 px;
-       }
-
-       /* 뷰 전환 버튼 스타일 */
- .view-toggle {
- 디스플레이: 플렉스;
- 갭: 10 px;
- 패딩: 10 px 20 px;
- 정당화 내용: 유연한 끝;
- 최대 너비: 900 px;
- 여백: 0 auto;
-       }
-
- .view-toggle 버튼 {
- 패딩: 8 px 15 px;
- 경계: 없음;
- 국경 radius: 4 px;
- background-color: #f0f0f0;
- 커서: 포인터;
- 글꼴 크기: 14 px;
- 전환: 모든 0.2초;
-       }
-
- .view-toggle 버튼.active {
- 배경색: #333;
- 색상: 흰색;
-       }
-
- .view-toggle 버튼:hover:(.active 아님) {
- background-color: #e0e0e0;
-       }
-
- .category-desc 설명 {
- 패딩: 20 px;
- background-color: #f8f8f8;
- 국경 radius: 8 px;
- 마진: 20 px 오토;
- 최대 너비: 900 px;
- 선 높이: 1.6;
-       }
-
- .주문 가이드 {
- background-color: #f8f8f8;
- 국경 radius: 8 px;
- 패딩: 20 px;
- 마진 탑: 40 px;
- 최대 너비: 900 px;
- 여백 왼쪽: 자동;
- 여백 오른쪽: 자동;
-       }
-
- .주문 가이드 h2 {
- 글꼴 크기: 18 px;
- 마진 바닥: 15 px;
- 테두리 하단: px 솔리드 #DDd 1개;
- 패딩 바텀: px 10개;
-       }
-
- .order-guide ol {
- 여백 왼쪽: 20 px;
- 마진 바닥: 15 px;
-       }
-
- .order-guide li {
- 마진 바닥: 8 px;
-       }
-
- .전화번호 {
- 배경색: #eeee;
- 패딩: 10 px;
- 텍스트 align: 중심;
- 국경 radius: 4 px;
- 마진 탑: 15 px;
-       }
-
- 홈 버튼 {
- 위치: 고정;
- 하단: 20개의 px;
- 오른쪽: 20 px;
- 배경색: #333;
- 색상: 흰색;
- 패딩: 10 px 20 px;
- 국경 radius: 4 px;
- 커서: 포인터;
- 경계: 없음;
- z-인덱스: 1000;
- box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-       }
-
- .category-title {
- 글꼴 크기: 24 px;
- 마진: 20 px;
- 텍스트 align: 중심;
- 색상: #333;
-       }
- </스타일>
-</머리>
-<바디>
- <nav class="nav">
- <h1>식충식물마트</h1>
- <div class="메뉴">
- <버튼 클래스="메뉴 항목" 클릭="showCategory('flytrap1')"파리지옥</버튼>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('flytrap2')"파리지옥2</버튼>
- <버튼 class="메뉴 항목" 클릭="showCategory('sundew')">끈끈이주걱</버튼>
- <버튼 class="메뉴 항목" 클릭="showCategory('root-sundew')">구근 끈끈이주걱</버튼>
- <버튼 클래스="메뉴 항목" 클릭="쇼 카테고리('페티올라리스-선듀')">페티올라리스 끈끈이주걱</버튼>
- <버튼 class="메뉴 항목" 클릭="showCategory('pygmy-sundew')">피그미 갬마</버튼>
- 버튼 클래스="메뉴 항목" 클릭="showCategory('원어민 선듀')">토종 끈끈이주걱</버튼>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('darlingtonia')">다링토니아</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('cephalotus')">세팔로투스</button>
- <버튼 class="메뉴 항목" 클릭="showCategory('tongbal')">통발</버튼>
- <버튼 클래스="메뉴 항목" 클릭="쇼 카테고리('알드로반다')">알드로반다</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('헬리암포라')">헬리암포라</button>
- 버튼 클래스="메뉴 항목" 클릭="쇼 카테고리('R-고고니아스')">R.고니아스</버튼>
- <버튼 class="메뉴 항목" 클릭="showCategory('nepenthes1')"네펜데스</버튼>
- <버튼 class="메뉴 항목" 클릭="showCategory('nepenthes2')"네펜데스2</버튼>
- <버튼 class="메뉴 항목" 클릭="showCategory('nepenthes3')"네펜데스3</버튼>
- <버튼 class="메뉴 항목" 클릭="showCategory('nepenthes4')"네펜데스4</버튼>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('네펜테스-암풀라리아')">네펜데스 앰풀라리아</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('pinguicula1')">벌레잡이제비꽃</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('pinguicula2')">벌레잡이제비꽃2</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('pinguicula3')">벌레잡이제비꽃3</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('pinguicula4')">벌레잡이제비꽃4</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('care')">식충식물재배책</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('조직-문화')">조직배양튜브</button>
- <버튼 class="메뉴 항목" 클릭="showCategory('씨앗')">종자</버튼>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('공급품')">원예재제, 생수태</button>
- <버튼 클래스="메뉴 항목" 클릭="showCategory('saracenia')">사라세니아 종자</button>
- </div>
- </nav>
-
- <메인 클래스="메인 콘텐츠">
- <!-- 메인 화면 -->
- <div id= "메인 콘텐츠">
- <div class="주문 가이드">
- <h2>식충식물마트 주문하기</h2>
- <올>
- <li>주문 목록</li>
- <li>주소</li>
- <li>이름</li>
- <li>핸드폰 번호를 작성해서 아래 "핸드폰 문자"로 보내주세요</li>
- </ol>
- <div class="전화번호">
- 핸드폰: 010 5045 5507
- </div>
- </div>
- </div>
-
- <!-- 카테고리 상품 목록 -->
- <div id="categoryContent" 스타일="디스플레이: 없음;">
- <h2 클래스="category-title" ID="현재 카테고리"></h2>
- <div class="view-toggle">
- <버튼 클릭="toggleView('grid')" 클래스="활성">격자형</버튼>
- <버튼 클릭="toggleView('list')"목록형</버튼>
- </div>
- <div id= "productList"></div>
- <div class="주문 가이드">
- <h2>식충식물마트 주문하기</h2>
- <올>
- <li>주문 목록</li>
- <li>주소</li>
- <li>이름</li>
- <li>핸드폰 번호를 작성해서 아래 "핸드폰 문자"로 보내주세요</li>
- </ol>
- <div class="전화번호">
- 핸드폰: 010 5045 5507
- </div>
- </div>
- </div>
-
- <버튼 클릭="showHome()" class="홈 버튼">메인으로</버튼>
- </메인>
-
- <스크립트>
- currentView = 'grid'를 허용합니다;
- currentCategoryId = '';
-
- 함수 토글뷰(보기) {
- 현재 보기 = 보기;
- const 버튼 = 문서.쿼리SelectorAll('보기-토글 버튼');
- 버튼.각 버튼(버튼 => 버튼.classList.remove('active');
- event.target.classList.add('활성');
-       
- 만약 (현재 카테고리Id) {
- showCategory(현재CategoryId);
-       }
-   }
-
-   function showCategory(categoryId) {
-       currentCategoryId = categoryId;
-       const mainContent = document.getElementById('mainContent');
-       const categoryContent = document.getElementById('categoryContent');
-       const currentCategory = document.getElementById('currentCategory');
-       const productList = document.getElementById('productList');
-
-       mainContent.style.display = 'none';
-       categoryContent.style.display = 'block';
-
-       currentCategory.textContent = categoryData[categoryId]?.title || categoryId;
-       
-       productList.innerHTML = '';
-       
-       if (categoryData[categoryId]?.products?.length > 0) {
-           productList.className = currentView === 'grid' ? 'grid-view' : 'list-view';
-           
-           if (categoryData[categoryId].description) {
-               const descriptionEl = document.createElement('p');
-               descriptionEl.className = 'category-description';
-               descriptionEl.textContent = categoryData[categoryId].description;
-               productList.insertAdjacentElement('beforebegin', descriptionEl);
-           }
-           
-           categoryData[categoryId].products.forEach(product => {
-               if (currentView === 'grid') {
-                   productList.innerHTML += `
-                       <div class="grid-item">
-                           <img src="${product.image}" alt="${product.name}" onerror="this.src='/api/placeholder/200/200'">
-                           <div class="grid-item-info">
-                               <h3>${product.name}</h3>
-                               <p>${product.price}</p>
-                           </div>
-                       </div>
-                   `;
-               } else {
-                   productList.innerHTML += `
-                       <div class="list-item">
-                           <img src="${product.image}" alt="${product.name }" onerror="this.src='/api/placeholder/200/200'">
- <div class="list-item-info">
- <h3>${product.name }</h3>
- <p>${product.price}/p>
- </div>
- </div>
- `;
-               }
- });
- }그 외 {
-           productList.innerHTML = '<p style="text-align: center; padding: 20px;">준비 중입니다.</p>';
-       }
-   }
-
-   function showHome() {
-       document.getElementById('mainContent').style.display = 'block';
-       document.getElementById('categoryContent').style.display = 'none';
-       currentCategoryId = '';
-   }
-   </script>
-
-   <script>
-       // 여기에 이전에 제공된 categoryData 객체를 넣으세요
 const categoryData = {
   'tissue-culture': {
-      title: '식충식물 조직배양튜브',
-      products: [
-          {
-              image: 'https://i.imgur.com/wvW729L.jpg',
-              name: '끈끈이주걱 조직배양튜브 Hartmeyorum',
-              price: '50,000원'
-          },
-          {
-              image: 'https://i.imgur.com/9PROx6c.jpg',
-              name: '파리지옥 조직배양튜브 B52',
-              price: '50,000원'
-          },
-          {
-              image: 'https://i.imgur.com/J9zPnDz.jpg',
-              name: '벌레잡이제비꽃 조직배양튜브 moranensis, primuliflora',
-              price: '50,000원'
-          },
-          {
-              image: 'https://i.imgur.com/YRUSzB7.jpg',
-              name: 'Dionaea buttcheeks',
-              price: '준비중.'
-          }
-      ]
+    title: '식충식물 조직배양튜브',
+    products: [
+      {
+        image: 'https://i.imgur.com/wvW729L.jpg',
+        name: '끈끈이주걱 조직배양튜브 Hartmeyorum',
+        price: '50,000원'
+      },
+      {
+        image: 'https://i.imgur.com/9PROx6c.jpg',
+        name: '파리지옥 조직배양튜브 B52',
+        price: '50,000원'
+      },
+      {
+        image: 'https://i.imgur.com/J9zPnDz.jpg',
+        name: '벌레잡이제비꽃 조직배양튜브 moranensis, primuliflora',
+        price: '50,000원'
+      },
+      {
+        image: 'https://i.imgur.com/YRUSzB7.jpg',
+        name: 'Dionaea buttcheeks',
+        price: '준비중.'
+      }
+    ]
   },
   'flytrap1': {
-      title: '파리지옥',
-      products: [
-          {
-              image: 'https://i.imgur.com/CEd0gCZ.jpg',
-              name: 'Alien',
-              price: '55,000원'
-          },
-          {
-              image: 'https://i.imgur.com/1Nng5KK.jpg', 
-              name: 'Sawtooth piranha',
-              price: '45,000원'
-          },
-          {
-              image: 'https://i.imgur.com/vzDXObs.jpg',
-              name: 'GJ Giant Cudo',
-              price: '55,000원'
-          },
-          {
-              image: 'https://i.imgur.com/Wsjaf50.jpg',
-              name: 'Scarlatine',
-              price: '55,000원'
-          },
-          {
-              image: 'https://i.imgur.com/OOHmme9.jpg',
-              name: 'Trev s Dracula',
-              price: '45,000원'
-          },
-          {
-              image: 'https://i.imgur.com/QeuYkDt.jpg',
-              name: 'Korean Melody Shark',
-              price: '40,000원'
-          },
-          {
-              image: 'https://i.imgur.com/Zjet1eI.jpg',
-              name: 'Biohazard',
-              price: '45,000원'
-          },
-          {
-              image: 'https://i.imgur.com/sJQ2oCk.jpg',
-              name: 'Bristletooth',
-              price: '50,000원'
-          },
-          {
-              image: 'https://i.imgur.com/i3wcdrx.jpg',
-              name: 'Fused Tooth',
-              price: '준비중.'
-          },
-          {
-              image: 'https://i.imgur.com/wvUZhqM.jpg',
-              name: 'Cupped trap',
-              price: '40,000원'
-          },
-          {
-              image: 'https://i.imgur.com/uMDH9hh.jpg',
-              name: 'Schupenstiel',
-              price: '45,000원'
-          },
-          {
-              image: 'https://i.imgur.com/xHSNPDd.jpg',
-              name: 'Rose(No trap)',
-              price: '40,000원'
-          },
-          {
-              image: 'https://i.imgur.com/IqcDIk8.jpg',
-              name: 'Coquillage',
-              price: '45,000원'
-          },
-          {
-              image: 'https://i.imgur.com/iXnez7X.jpg',
-              name: 'Fuzzy Tooth',
-              price: '40,000원'
-          },
-          {
-              image: 'https://i.imgur.com/xyRIXsa.jpg',
-              name: 'Mirror',
-              price: '45,000원'
-          },
-          {
-              image: 'https://i.imgur.com/FWyPQtU.jpg',
-              name: 'Angel wings',
-              price: '45,000원'
-          },
-          {
-              image: 'https://i.imgur.com/3jbmG2M.jpg',
-              name: 'Saw Tooth',
-              price: '45,000원'
-          }
-      ]
+    title: '파리지옥',
+    products: [
+      {
+        image: 'https://i.imgur.com/CEd0gCZ.jpg',
+        name: 'Alien',
+        price: '55,000원'
+      },
+      {
+        image: 'https://i.imgur.com/1Nng5KK.jpg',
+        name: 'Sawtooth piranha',
+        price: '45,000원'
+      },
+      {
+        image: 'https://i.imgur.com/vzDXObs.jpg',
+        name: 'GJ Giant Cudo',
+        price: '55,000원'
+      },
+      {
+        image: 'https://i.imgur.com/Wsjaf50.jpg',
+        name: 'Scarlatine',
+        price: '55,000원'
+      },
+      {
+        image: 'https://i.imgur.com/OOHmme9.jpg',
+        name: 'Trev s Dracula',
+        price: '45,000원'
+      },
+      {
+        image: 'https://i.imgur.com/QeuYkDt.jpg',
+        name: 'Korean Melody Shark',
+        price: '40,000원'
+      },
+      {
+        image: 'https://i.imgur.com/Zjet1eI.jpg',
+        name: 'Biohazard',
+        price: '45,000원'
+      },
+      {
+        image: 'https://i.imgur.com/sJQ2oCk.jpg',
+        name: 'Bristletooth',
+        price: '50,000원'
+      },
+      {
+        image: 'https://i.imgur.com/i3wcdrx.jpg',
+        name: 'Fused Tooth',
+        price: '준비중.'
+      },
+      {
+        image: 'https://i.imgur.com/wvUZhqM.jpg',
+        name: 'Cupped trap',
+        price: '40,000원'
+      },
+      {
+        image: 'https://i.imgur.com/uMDH9hh.jpg',
+        name: 'Schupenstiel',
+        price: '45,000원'
+      },
+      {
+        image: 'https://i.imgur.com/xHSNPDd.jpg',
+        name: 'Rose(No trap)',
+        price: '40,000원'
+      },
+      {
+        image: 'https://i.imgur.com/IqcDIk8.jpg',
+        name: 'Coquillage',
+        price: '45,000원'
+      },
+      {
+        image: 'https://i.imgur.com/iXnez7X.jpg',
+        name: 'Fuzzy Tooth',
+        price: '40,000원'
+      },
+      {
+        image: 'https://i.imgur.com/xyRIXsa.jpg',
+        name: 'Mirror',
+        price: '45,000원'
+      },
+      {
+        image: 'https://i.imgur.com/FWyPQtU.jpg',
+        name: 'Angel wings',
+        price: '45,000원'
+      },
+      {
+        image: 'https://i.imgur.com/3jbmG2M.jpg',
+        name: 'Saw Tooth',
+        price: '45,000원'
+      }
+    ]
   },
-  'flytrap2': {
-      title: '파리지옥2',
-      products: [
-          {
-              image: 'https://i.imgur.com/fpTpBcw.jpg',
-              name: 'DCXL',
-              price: '40,000원'
-          },
-          {
-              image: 'https://i.imgur.com/d57WhSf.jpg',
-              name: 'Wacky Traps',
-              price: '50,000원'
-          },
-          {
-              image: 'https://i.imgur.com/vFLzIha.jpg',
-              name: 'Buttcheeks',
-              price: '50,000원'
-          },
-          {
-              image: 'https://i.imgur.com/P9bt6kp.jpg',
-              name: 'B52',
-              price: '40,000원'
-          },
-          {
-              image: 'https://i.imgur.com/Dvmojfu.jpg',
-              name: 'Schupenstiel',
-              price: '45,000원'
-          },
-          {
-              image: 'https://i.imgur.com/p5hHHPJ.jpg',
-              name: 'Akay Ryu',
-              price: '45,000원'
-          }
-      ]
+  // ... 나머지 카테고리들도 같은 형식으로 추가
+  'care': {
+    title: '식충식물재배책',
+    products: [
+      {
+        image: 'https://imgur.com/6Fd2V8K.jpg',
+        name: '식충식물재배책',
+        price: '23,000원'
+      }
+    ]
   }
 };
-    'sundew': {
-        title: '끈끈이주걱',
-        products: [
-            {
-              image: 'https://imgur.com/a/OTcv1lh.jpg',
-              name: 'Latifolia',
-              price: '45,000원'
-            },
-            {
-                image: 'https://imgur.com/a/EE401G4.jpg',
-                name: 'Regia',
-                price: '55,000원'
-            },
-            {
-                image: 'https://imgur.com/a/HkzKvco.jpg',
-                name: 'Hamiltonii',
-                price: '25,000원'
-            },
-            {
-                image: 'https://imgur.com/a/N0LTVKj.jpg',
-                name: 'Binata',
-                price: '15,000원'
-            },
-            {
-                image: 'https://imgur.com/a/JZunbC1.jpg',
-                name: 'Hercules',
-                price: '35,000원'
-            },
-            {
-                image: 'https://imgur.com/a/9fF0pXx.jpg',
-                name: 'Andromeda',
-                price: '45,000원'
-            },
-            {
-                image: 'https://imgur.com/a/JdBaDL9.jpg',
-                name: 'Intermedia hybrid',
-                price: '35,000원'
-            },
-            {
-                image: 'https://imgur.com/a/vIjpkoH.jpg',
-                name: 'Intermedia alba',
-                price: '17,000원'
-            },
-            {
-                image: ' .jpg',
-                name: 'spatulata',
-                price: '17,000원'
-            },
-            {
-                image: 'https://imgur.com/a/RDJVwym.jpg',
-                name: 'Gramogolensis',
-                price: '45,000원'
-            },
-            {
-                image: 'https://imgur.com/gqzzNPo.jpg',
-                name: 'Tomentosa x Tentacul',
-                price: '45,000원'
-            }
-        ]
-    },
-    'root-sundew': {
-        title: '구근 끈끈이주걱',
-        products: [
-            {
-                image: 'https://imgur.com/Z0MTVPw.jpg',
-                name: 'Rosulata',
-                price: '준비중. 42000원'
-            },
-            {
-                image: 'https://imgur.com/0X3pQvn.jpg',
-                name: 'marchantii,pink bulb',
-                price: '준비중. 37000원'
-            },
-            {
-                image: 'https://imgur.com/LIY1AMd.jpg',
-                name: 'hookeri',
-                price: '준비중 35000원'
-            },
-            {
-                image: './images/root_5.jpg',
-                name: 'Major,
-                price: '준비중.'
-            }
-        ]
-    },
-    'petiolais-sundew': {
-        title: 'Petiolais 끈끈이주걱',
-        products: [
-            {
-                image: 'https://imgur.com/jiIvWYs.jpg',
-                name: 'Lanata',
-                price: '35,000원'
-            },
-            {
-                image: 'https://imgur.com/8dSvXXp.jpg',
-                name: 'Fulva',
-                price: '35,000원'
-            },
-            {
-                image: 'https://imgur.com/ZwO2Ae3.jpg',
-                name: 'dilatato petiolaris',
-                price: '35,000원'
-            },
-            {
-                image: 'https://imgur.com/bBbKbGd',
-                name: 'Falconeri',
-                price: '준비중.'
-            },
-            {
-                image: 'https://imgur.com/olOLNvF.jpg',
-                name: 'Ordensis "Kingston Red"',
-                price: '35,000원'
-            },
-            {
-                image: 'https://imgur.com/AfWurSH.jpg',
-                name: 'Derbyensis "Prison Free"',
-                price: '35,000원'
-            },
-            {
-                image: 'https://imgur.com/WWk1lkT.jpg',
-                name: 'Metalic orange flowe',
-                price: '35,000원'
-            },
-            {
-                image: 'https://imgur.com/undefined.jpg',
-                name: 'Paradoxa Type form',
-                price: '35,000원'
-            }
-        ]
-    },
-    'native-sundew': {
-        title: '토종 끈끈이주걱',
-        description: '주거는 화분에 2주 이상, 귀개는 1주 심어져 있습니다',
-        products: [
-            {
-                image: 'https://imgur.com/rUfQerP.jpg',
-                name: '토종끈끈이주걱',
-                price: '40,000원'
 
-            },
-            {
-                image: 'https://imgur.com/undefined.jpg',
-                name: '토종끈끈이귀개',
-                price: '45,000원'
-            }
-        ]
-    },
-    'darlingtonia': {
-        title: '다링토니아',
-        products: [
-            {
-                image: 'https://imgur.com/D8OJdoW',
-                name: 'Cobra Plants',
-                price: '55,000원'
-            },
-            {
+const PlantMart = () => {
+  const [currentCategory, setCurrentCategory] = useState(null);
 
-                image: 'https://imgur.com/undefined.jpg',
-                name: 'meadowhallclone x RGG',
-                price: ''
-            },
-            {
-                image: 'https://imgur.com/gLQ355m.jpg',
-                name: 'Meadowhall clone x RGG',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/4kyYnNq.jpg',
-                name: 'Scottish clone x Red German Giant',
-                price: '65,000원'
-            }
-        ]
-    },
-    'cephalotus': {
-        title: '세팔로투스',
-        products: [
-            {
-                image: 'https://imgur.com/undefined.jpg',
-                name: 'Cephalotus',
-                price: '40,000원'
-            },
-            {
-                image: 'https://imgur.com/undefined.jpg',
-                name: 'Big Boy',
-                price: '45,000원'
-            },
-            {
-                image: 'https://imgur.com/N1iGS6x.jpg',
-                name: 'Eden Black',
-                price: '준비중150,000원'
-            },
-            {
-                image: 'https://imgur.com/krt8zWv.jpg',
-                name: "Charles Brewer's",
-                price: '95,000원'
-            },
-            {
-                image: 'https://imgur.com/GGXgUzb.jpg',
-                name: "Hummer's Giant",
-                price: '95,000원'
-            },
-            {
-                image: 'https://imgur.com/vFhdhFe.jpg',
-                name: 'BlackLids',
-                price: '준비중.'
-            }
-        ]
-    },
-    'nepenthes1': {
-        title: '네펜데스',
-        products: [
-            {
-                image: 'https://imgur.com/SW1jScT.jpg',
-                name: 'Lowii x Ventricosa',
-                price: '준비중'
-            },
-            {
-                image: 'https://imgur.com/8kEv5Dj.jpg',
-                name: 'singalana',
-                price: '준비중'
-            },
-            {
-                image: 'https://imgur.com/eg8xjCr.jpg',
-                name: 'Albomarginata',
-                price: '85,000원'
-            },
-            {
-                image: 'https://imgur.com/fx8aJRI.jpg',
-                name: 'Albomarginata Northwestern Peninsular Malaysia',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/QYB89Ms.jpg',
-                name: 'Bicalcarata',
-                price: '75,000원'
-            },
-            {
-                image: 'https://imgur.com/LAriH9k.jpg',
-                name: 'Mirabilis red',
-                price: '75,000원'
-            },
-            {
-                image: 'https://imgur.com/NAv2V47.jpg',
-                name: 'Hemsleyana Upper pitcher',
-                price: '95,000원'
-            },
-            {
-                image: 'https://imgur.com/ZwqKhuj.jpg',
-                name: 'maxima mini',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/Hm0iCvd.jpg',
-                name: 'Lowii x Ventricosa',
-                price: '85,000원'
-            },
-            {
-                image: 'https://imgur.com/wQXmD8T.jpg',
-                name: 'Lady Luck(ampullaria x ventricosa)',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/pHAi7Z2.jpg',
-                name: 'Miranda',
-                price: '57,000원'
-            },
-            {
-                image: 'https://imgur.com/h6DiNa3.jpg',
-                name: 'Gracilis black',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/ZlGBUUL.jpg',
-                name: 'Gracilis',
-                price: '준비중.'
-            }
-        ]
-    },
-    'nepenthes2': {
-        title: '네펜데스2',
-        products: [
-            {
-                image: 'https://imgur.com/hOx9Qrc.jpg',
-                name: 'Viking',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/23fxkc3.jpg',
-                name: 'Rafflesiana',
-                price: '85,000원'
-            },
-            {
-                image: 'https://imgur.com/5svsMHI.jpg',
-                name: 'Ventricosa Northern part of quezon province',
-                price: '85,000원'
-            },
-            {
-                image: 'https://imgur.com/tiKsP2C.jpg',
-                name: 'Suratensis from Thailand',
-                price: '75,000원'
-            },
-            {
-                image: 'https://imgur.com/zNUC1B5.jpg',
-                name: 'Veitchii golden peristome',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/PXdur32.jpg',
-                name: 'Mirabilis',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/kIKTowJ.jpg',
-                name: 'ventricosa x talang',
-                price: '60,000원'
-            }
-        ]
-    },
-    'nepenthes3': {
-        title: '네펜데스3',
-        products: [
-            {
-                image: 'https://imgur.com/TqR9ogo.jpg',
-                name: 'Talangdig',
-                price: '85,000원'
-            },
-            {
-                image: 'https://imgur.com/ceib8uO.jpg',
-                name: 'Truncata',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/eHp1EWP.jpg',
-                name: 'reinwardtiana',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/U64hxEr.jpg',
-                name: 'mirabilis "wavy leaf"',
-                price: '준비중.'
-            },
-            {
-                image: 'https://imgur.com/efR1BHb.jpg',
-                name: 'sanguinea',
-                price: '준비중.'
-            },
-            {
-                image: 'https://imgur.com/EQ7SET0.jpg',
-                name: 'jacquelineae',
-                price: '준비중.'
-            },
-            {
-                image: 'https://imgur.com/1FznWEH.jpg',
-                name: 'glabrata',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/E5w28WA.jpg',
-                name: 'lowii x ventricosa',
-                price: '85,000원'
-            }
-        ]
-    },
-    'nepenthes4': {
-        title: '네펜데스4',
-        products: [
-            {
-                image: 'https://imgur.com/7OmtOKE.jpg',
-                name: 'Lowii',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/brqFGrn.jpg',
-                name: 'Clipata',
-                price: '준비중'
-            },
-            {
-                image: 'https://imgur.com/BviL1LO.jpg',
-                name: 'viking x benstonei',
-                price: '60,000원'
-            },
-            {
-                image: 'https://imgur.com/lTBV89q.jpg',
-                name: 'Gaya',
-                price: '85,000원'
-            },
-            {
-                image: 'https://imgur.com/c3yOEy0.jpg',
-                name: 'andamana',
-                price: '75,000원'
-            },
-            {
-                image: 'https://imgur.com/3lFyKYr.jpg',
-                name: 'ventricosa Mt. Mayon, Southern part, Philippines',
-                price: '준비중'
-            }
-        ]
-    },
-    'nepenthes-ampullaria': {
-        title: '네펜데스 앰풀라리아',
-        products: [
-            {
-                image: 'https://imgur.com/6AqzIBR.jpg',
-                name: 'Red speckled & Lime Twist',
-                price: '준비중.'
-            },
-            {
-                image: 'https://imgur.com/7TW6NBH.jpg',
-                name: 'Red Speckled (IT)',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/uQxyvqI.jpg',
-                name: 'Purple',
-                price: '85,000원'
-            },
-            {
-                image: 'https://imgur.com/AV4jWw9.jpg',
-                name: 'Viking x Ampullaria Black Miracle',
-                price: '95,000원'
-            },
-            {
-                image: 'https://imgur.com/OZUf6qf.jpg',
-                name: 'Ampullaria Hot Lips',
-                price: '준비중 125,000원'
-            },
-            {
-                image: 'https://imgur.com/YiIJaZf.jpg',
-                name: 'Lime Twist(3-1?)',
-                price: '65,000원'
-            },
-            {
-                image: 'https://imgur.com/GHAKxBc.jpg',
-                name: 'Lime(Bau) Green',
-                price: '65,000원'
-            }
-        ]
-    },
-   'tongbal': {
-       title: '통발',
-       products: [
-           {
-               image: 'https://imgur.com/iBU3IKw.jpg',
-               name: 'Tridentata',
-               price: '35,000원'
-           },
-           {
-               image: 'https://imgur.com/rWcXxuf.jpg',
-               name: 'Dichotoma',
-               price: '35,000원'
-           },
-           {
-               image: './images/tongbal_4.jpg',
-               name: 'Dichotoma',
-               price: '35,000원'
-           },
-           {
-               image: 'https://imgur.com/NLp6J4G.jpg',
-               name: 'longifolia',
-               price: '35,000원'
-           },
-           {
-               image: 'https://imgur.com/xhiXhYv.jpg',
-               name: 'U.endresii subsp x nelumbifolia x endresii subsp',
-               price: '35,000원'
-           },
-           {
-               image: 'https://imgur.com/sPl605P.jpg',
-               name: 'tricolor',
-               price: '35,000원'
-           },
-           {
-               image: 'https://imgur.com/tICpaob.jpg',
-               name: 'sandersonii "Blue Form" ',
-               price: '15,000원'
-           },
-           {
-               image: 'https://imgur.com/etVzwTy.jpg',
-               name: 'sandersonii Typical',
-               price: '15,000원'
-           },
-           {
-               image: 'https://imgur.com/ued2blG.jpg',
-               name: 'Gibba',
-               price: '15,000원'
-           }
-       ]
-   },
-   'aldrovanda': {
-       title: 'Aldrovanda벌레먹이말',
-       products: [
-           {
-               image: 'https://imgur.com/pRNBW6K.jpg',
-               name: 'Aldrovanda 벌레먹이말',
-               price: '50,000원'
-           },
-           {
-               image: 'https://imgur.com/cuuiyb1.jpg',
-               name: 'Aldrovanda(벌레먹이말)1주 From Darwin, Australia',
-               price: '준비중'
-           },
-           {
-               image: 'https://imgur.com/gFEW944.jpg',
-               name: 'Aldrovanda',
-               price: '준비중'
-           }
-       ]
-   },
-   'heliamphora': {
-       title: '헬리암포라',
-       products: [
-           {
-               image: 'https://imgur.com/FORRzvU',
-               name: 'Heliamphora',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/1pfsL99.jpg',
-               name: 'Nutans',
-               price: '50,000원'
-           },
-           {
-               image: 'https://imgur.com/KveSP9b.jpg',
-               name: 'Minor',
-               price: '40,000원'
-           },
-           {
-               image: 'https://imgur.com/SMrDv74.jpg',
-               name: 'sp. akopan x collina',
-               price: '75,000원'
-           },
-           {
-               image: 'https://imgur.com/vfoOY69.jpg',
-               name: 'tatei',
-               price: '준비중'
-           }
-       ]
-   },
-   'R-gorgonias': {
-       title: 'R.gorgonias',
-       products: [
-           {
-               image: 'https://imgur.com/ELSkDcG.jpg',
-               name: 'R.gorgonias',
-               price: '75,000원'
-           },
-           {
-               image: 'https://imgur.com/yqV5Jzj.jpg',
-               name: 'R.gorgonias',
-               price: '75,000원'
-           }
-       ]
-   }
+  const Navigation = () => (
+    <nav className="bg-white border-b border-gray-200 py-5">
+      <h1 className="text-2xl text-center mb-4">식충식물마트</h1>
+      <div className="flex flex-wrap gap-2 justify-center px-4 max-w-7xl mx-auto">
+        {Object.entries(categoryData).map(([id, category]) => (
+          <button
+            key={id}
+            onClick={() => setCurrentCategory({ id, name: category.title })}
+            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm hover:bg-gray-200 transition-colors whitespace-nowrap ${
+              currentCategory?.id === id ? 'bg-gray-800 text-white' : ''
+            }`}
+          >
+            {category.title}
+          </button>
+        ))}
+      </div>
+    </nav>
+  );
+
+  const OrderGuide = () => (
+    <div className="bg-gray-100 rounded-lg p-5 max-w-3xl mx-auto mt-10">
+      <h2 className="text-lg font-bold mb-4 pb-2 border-b border-gray-300">식충식물마트 주문하기</h2>
+      <ol className="list-decimal ml-5 mb-4">
+        <li className="mb-2">주문 목록</li>
+        <li className="mb-2">주소</li>
+        <li className="mb-2">이름</li>
+        <li className="mb-2">핸드폰 번호를 작성해서 아래 "핸드폰 문자"로 보내주세요</li>
+      </ol>
+      <div className="bg-gray-200 p-3 text-center rounded">
+        핸드폰: 010 5045 5507
+      </div>
+    </div>
+  );
+
+  const ProductList = ({ products = [] }) => (
+    <div className="flex flex-col gap-5 p-5 max-w-3xl mx-auto">
+      {products.map((product, index) => (
+        <div key={index} className="flex border border-gray-200 rounded-lg p-4 bg-white shadow-sm">
+          <div className="w-48 h-48 flex-shrink-0">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover rounded"
+              onError={(e) => {
+                e.target.src = "/api/placeholder/200/200";
+              }}
+            />
+          </div>
+          <div className="flex flex-col justify-center ml-5">
+            <h3 className="text-lg font-medium mb-2">{product.name}</h3>
+            <p className="text-gray-900 font-bold text-lg">{product.price}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  const CategoryDescription = ({ description, description2, description3 }) => {
+    if (!description && !description2 && !description3) return null;
+    
+    return (
+      <div className="bg-gray-100 p-5 rounded-lg max-w-3xl mx-auto mb-5">
+        {description && <p className="mb-2">{description}</p>}
+        {description2 && <p className="mb-2">{description2}</p>}
+        {description3 && <p>{description3}</p>}
+      </div>
+    );
+  };
+
+  const HomeButton = () => (
+    <button
+      onClick={() => setCurrentCategory(null)}
+      className="fixed bottom-5 right-5 bg-gray-800 text-white px-5 py-2 rounded shadow-md hover:bg-gray-700 transition-colors"
+    >
+      메인으로
+    </button>
+  );
+
+  const currentCategoryData = currentCategory ? categoryData[currentCategory.id] : null;
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      <Navigation />
+      
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4">
+        {!currentCategory ? (
+          <OrderGuide />
+        ) : (
+          <>
+            <h2 className="text-2xl text-center text-gray-800 my-5">
+              {currentCategoryData?.title}
+            </h2>
+            <CategoryDescription 
+              description={currentCategoryData?.description}
+              description2={currentCategoryData?.description2}
+              description3={currentCategoryData?.description3}
+            />
+            {currentCategoryData?.products ? (
+              <ProductList products={currentCategoryData.products} />
+            ) : (
+              <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
+            )}
+            <OrderGuide />
+          </>
+        )}
+        {currentCategory && <HomeButton />}
+      </main>
+    </div>
+  );
 };
-'pinguicula1': {
-   title: '벌레잡이제비꽃1',
-   description: '벌레잡이제비꽃은 화분 없이 식물만 보내드리며, 화분이 필요하면 알려주시기 바랍니다. 혹시 품종이름이 틀릴 수 있으니 참고해서 주문하여 주시기 바랍니다 .',
-   products: [
-       {
-           image: 'https://imgur.com/4M9bUkE.jpg',
-           name: 'Huahuapan',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/axTb6KO.jpg',
-           name: 'Ehlersiae x Mesophytica',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/koUUvj2.jpg',
-           name: 'Agnata El Lobo',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/qP35OHg.jpg',
-           name: 'Agnata true blue',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/7DeTpnv.jpg',
-           name: 'Ehlersiae Victoria',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/LL9Dl4n.jpg',
-           name: 'Agnata El Lobo x moctezumae',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/bEyhlhd.jpg',
-           name: 'Gracilis',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/NUvpFfc.jpg',
-           name: 'laueana',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/ZlG7Y50.jpg',
-           name: 'Gigantea alba 흰꽃 직경 20cm 대형종',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/C2RYPrk.jpg',
-           name: 'moctezumae',
-           price: '30,000원'
-       },
-       {
-           image: 'https://imgur.com/mDTdfR9.jpg',
-           name: 'kondoi',
-           price: '30,000원'
-       },
-       {
-           image: 'https://imgur.com/t1T2GsJ.jpg',
-           name: 'cyclosectar',
-           price: '30,000원'
-       },
-       {
-           image: 'https://imgur.com/CmqkqKG.jpg',
-           name: 'primuliflora',
-           price: '25,000원'
-       },
-       {
-           image: 'https://imgur.com/Eci00b1.jpg',
-           name: 'moranensis',
-           price: '15,000원'
-       },
-       {
-           image: 'https://imgur.com/tAuKG65.jpg',
-           name: 'Hemiepiphytica x Cyclosecta',
-           price: '준비중'
-           }
-       ]
-   }
-};
-'pinguicula2': {
-   title: '벌레잡이제비꽃2',
-   description: '벌레잡이제비꽃은 화분 없이 식물만 보내드리며, 화분이 필요하면 알려주시기 바랍니다. 혹시 품종이름이 틀릴 수 있으니 참고해서 주문하여 주시기 바랍니다 .',
-   products: [
-       {
-           image: 'https://imgur.com/zsxPsNc.jpg',
-           name: 'Agnata true blue x Gigantea',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/dnLnIf6.jpg',
-           name: 'BCP Crystal',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/pC5okdL.jpg',
-           name: 'Gigantea x Cyclosect',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/Uf49eGX.jpg',
-           name: 'p. gypsicola. Buena Vista, San Luis potosi, Mexico. ',
-           price: '30,000원'
-       },
-       {
-           image: 'https://imgur.com/KpDklXe.jpg',
-           name: 'laueana red leaf x agnata el lobo. ',
-           price: '37,000원'
-       },
-       {
-           image: 'https://imgur.com/SnuofCQ.jpg',
-           name: 'cv. marciano',
-           price: '30,000원'
-       },
-       {
-           image: 'https://imgur.com/0ulmHXf.jpg',
-           name: 'Florian',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/LNryZok.jpg',
-           name: 'kondoi',
-           price: '30,000원'
-           }
-       ]
-   }
-};
-'pinguicula3': {
-   title: '벌레잡이제비꽃3',
-   description: '벌레잡이제비꽃은 화분 없이 식물만 보내드리며, 화분이 필요하면 알려주시기 바랍니다. 혹시 품종이름이 틀릴 수 있으니 참고해서 주문하여 주시기 바랍니다 .',
-   products: [
-       {
-           image: 'https://imgur.com/Bb7bwPN.jpg',
-           name: 'Calderoniae. San Luis potosi,  Mexico',
-           price: '47,000원'
-       },
-       {
-           image: 'https://imgur.com/wdTOxVX.jpg',
-           name: 'Apasionada',
-           price: '30,000원'
-       },
-       {
-           image: 'https://imgur.com/PcU6PZ3.jpg',
-           name: 'Johanna',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/TQInTrC.jpg',
-           name: 'Emarginata',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/C5gzm6h.jpg',
-           name: 'Moranensis var. alba. white flower, San Cristobal, Mexico',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/JvQEBVy.jpg',
-           name: 'Moranensis roseii 대형종',
-           price: '37,000원'
-       },
-       {
-           image: 'https://imgur.com/Uj5w1hQ.jpg',
-           name: 'Guatemala 3,100m',
-           price: '45,000원'
-       },
-       {
-           image: 'https://imgur.com/KHsZGdu.jpg',
-           name: 'Elizabethiae',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/dwbB9Uq.jpg',
-           name: 'Pirouette',
-           price: '준비중'
-           }
-       ]
-   }
-};
-'pinguicula3': {
-   title: '벌레잡이제비꽃3',
-   description: '벌레잡이제비꽃은 화분 없이 식물만 보내드리며, 화분이 필요하면 알려주시기 바랍니다. 혹시 품종이름이 틀릴 수 있으니 참고해서 주문하여 주시기 바랍니다 .',
-   products: [
-       {
-           image: 'https://imgur.com/hW8fC7Q.jpg',
-           name: 'Lautner 92/52',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/3sdKvHp.jpg',
-           name: 'Debbertiana . Metalic Purple',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/2kCYnK9.jpg',
-           name: 'Alfred Lau 13',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/bOzahZp.jpg',
-           name: 'jaumavensis Cardonal',
-           price: '30,000원'
-       },
-       {
-           image: 'https://imgur.com/rFTcPx3.jpg',
-           name: 'Kewensis',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/52KoVMC.jpg',
-           name: 'laxifolia',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/k5pSNy1.jpg',
-           name: 'laueana CP2 x emarginata',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/P0Rr4nn.jpg',
-           name: 'Moranensis A(대형종)',
-           price: '37,000원'
-       },
-       {
-           image: 'https://imgur.com/TmUd1kB.jpg',
-           name: 'El Mirador',
-           price: '35,000원'
-       },
-       {
-           image: 'https://imgur.com/zHgPc0w.jpg',
-           name: 'pilosa',
-           price: '30,000원'
-       },
-       {
-           image: 'https://imgur.com/F6HXpsK.jpg',
-           name: 'x Sethos',
-           price: '37,000원'
-           }
-       ]
-   }
-};
-   'sarracenia': {
-       title: '사라세니아',
-       description: '* 품종이름이 다를 수 있으니 참고해서 주문해 주시기 바라며, 화분에 1주 심어져 있습니다.',
-       description2: '* 사라세니아는 화분 없이 식물만 보내 드리며, 화분이 필요하면 알려주시기 바랍니다.',
-       description3: '* 사라세니아 종자는 자가수분 종자 입니다. 그러나 타가수분 종자일 수 도있습니다. 참고해서 주문해 주시기 바랍니다. 2024년 종자..',
-       products: [
-           {
-               image: 'https://imgur.com/3FAWytE.jpg',
-               name: 'Florida Gypsy',
-               price: '130,000원'
-           },
-           {
-               image: 'https://imgur.com/sHGOd06.jpg',
-               name: 'Flava',
-               price: '43,000원'
-           },
-           {
-               image: 'https://imgur.com/dG8qYtb.jpg',
-               name: 'Leucophylla',
-               price: '43,000원'
-           },
-           {
-               image: 'https://imgur.com/BYw5R8r.jpg',
-               name: 'Alata',
-               price: '43,000원'
-           },
-           {
-               image: 'https://imgur.com/FPE4krH.jpg',
-               name: 'Psittacina',
-               price: '37,000원'
-           },
-           {
-               image: 'https://imgur.com/FPE4krH.jpg',
-               name: 'Psittacina',
-               price: '37,000원'
-           },
-           {
-               image: 'https://imgur.com/qbyUTUY.jpg',
-               name: '사라세니아 씨방',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/IoqBc8g.jpg',
-               name: 'Bella x leucophylla seeds',
-               price: '9,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/aCpaCE0.jpg',
-               name: 'alata seeds',
-               price: '9,000원/15seeds'
-           },
-           {
-               image: 'https://imgur.com/news9pH.jpg',
-               name: '씨앗 NO.1',
-               price: '9,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/BeeHmiU.jpg',
-               name: '씨앗 NO.2',
-               price: '9,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/1r1h1yA.jpg',
-               name: '씨앗 NO.3',
-               price: '9,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/E16gmoh.jpg',
-               name: '씨앗 NO.4',
-               price: '9,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/OVoVkBJ.jpg',
-               name: '씨앗 NO.5',
-               price: '9,000원/20seeds'
-           }
-       ]
-   },
-   'pygmy-sundew': {
-       title: 'pygmy 갬마',
-       description: '* 품종 이름이 혹시 다를 수 있으니 참고하시기 바라며, 여기에 없는 품종은 문의 바랍니다.',
-       description2: '* 겜마는 가을부터 겨울에만 판매합니다.',
-       description3: '* 모든 겜마: 10,000원/10개.',
-       products: [
-           {
-               image: 'https://imgur.com/OgmbOpG.jpg',
-               name: 'D. gibsonii',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/NAj12tG.jpg',
-               name: 'D. verrucata. Betty s Beach ',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/Obh09nt.jpg',
-               name: 'D. patens',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/ZkeewtV.jpg',
-               name: 'D. scorpioides',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/2HND0jw.jpg',
-               name: 'occidentalis x pulch',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/Sl7RMh1.jpg',
-               name: 'stelliflora',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/cspRwDN.jpg',
-               name: 'D.pulchella',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/axeiBlO.jpg',
-               name: 'D. allantostigma',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/lH7jOnl.jpg',
-               name: 'D. closterostigma . Mogumber',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/dWoH3wi.jpg',
-               name: 'D. androsacea',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/1JBf0Pf.jpg',
-               name: 'D. callistos',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/XkK1ThQ.jpg',
-               name: 'D. micrantha. Wanneroo',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/iYZBD0a.jpg',
-               name: 'D. pycnoblasta',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/CBgmKtz.jpg',
-               name: 'patens x occidentali',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/V0Cn0Kf.jpg',
-               name: 'D. platysyigma',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/XI4EJDX.jpg',
-               name: 'sewelliae',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/pqe8et9.jpg',
-               name: 'paleacea sp. roseana',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/Jdr75S0.jpg',
-               name: 'mannii x omissa',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/r4KyE2F.jpg',
-               name: 'omissa',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/9OICOrN.jpg',
-               name: 'omissa x pulchella',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/aZJuXhy.jpg',
-               name: 'pygmaea ESA',
-               price: ''
-           },
-           {
-               image: 'https://imgur.com/MFpiLJF.jpg',
-               name: 'nitidula x occidenta',
-               price: ''
-           }
-       ]
-   },
-   'seeds': {
-       title: '종자',
-       description: '* 신선하고 건강한 종자를 공급하고 있으나  각 사용자 분들의 여러 요인들(환경, 관리 방법 등)에 변수가 있기에 발아의 성공 여부는 저희가 알 수 없습니다. 그리고 대부분의 파리지옥 종자는 발아 후 부모와 같은 형질의 개체가 나올 수 없으나 새로운 돌연변이 개체가 나올 수 있습니다. 
-"Schupenstiel",  "Akay Ryu",  "All Green", "Saw Tooth",  Mirror 그리고 "Dentate"는 부모와 비슷한 개체가 나올 수 있습니다. 참고해서 주문하여 주시기 바랍니다.여기에 없는 종자는 문의해 주시기 바랍니다.',
-       products: [
-           {
-               image: 'https://imgur.com/G8uFSLt.jpg',
-               name: 'D.intermedia Cuba',
-               price: '9,000원/20seeds'
-           },
-           {
-               image: './images/seed_2.jpg',
-               name: 'R.gorgonias',
-               price: '준비중/3seeds'
-           },
-           {
-               image: 'https://imgur.com/w0OGXRC.jpg',
-               name: 'Byblis liniflora',
-               price: '10,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/gMP6713.jpg',
-               name: 'U.longifolia',
-               price: '10,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/LhpCclq.jpg',
-               name: 'U.nelumbifolia x reniformis',
-               price: '준비중'
-           },
-           {
-               image: 'https://imgur.com/LykoTi5.jpg',
-               name: 'Drosophyllum',
-               price: '준비중/3seeds'
-           },
-           {
-               image: 'https://imgur.com/ZtvNOvK.jpg',
-               name: 'Slackii x Capensis alba',
-               price: '9,000원/20-25seeds'
-           },
-           {
-               image: './images/seed_3.jpg',
-               name: 'Dielsiana x Nidiformis',
-               price: '9,000원/20-25seeds'
-           },
-           {
-               image: 'https://imgur.com/ShunHL2.jpg',
-               name: 'D.burmannii',
-               price: '9,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/ZJjSuxZ.jpg',
-               name: 'Spatulata Mt Arthuri',
-               price: '8,000원/20-25seeds'
-           },
-           {
-               image: 'https://imgur.com/K32jpOB.jpg',
-               name: 'D.affinis',
-               price: '9,000원/15seeds'
-           },
-           {
-               image: 'https://imgur.com/H1FbjGY.jpg',
-               name: 'Hercules ICPS등록품종 D.capensis alba x aliciae',
-               price: '10,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/DETXlLU.jpg',
-               name: 'D.cistiflora',
-               price: '준비중/10seeds'
-           },
-           {
-               image: 'https://imgur.com/uy1AgfC.jpg',
-               name: 'D.admirabilis',
-               price: '9,000원/20-30seeds'
-           },
-           {
-               image: 'https://imgur.com/8jRSrDP.jpg',
-               name: 'D.anglica',
-               price: '10,000원/15seeds'
-           },
-           {
-               image: 'https://imgur.com/idh1P3N.jpg',
-               name: 'D.sp lantau Island',
-               price: '8,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/aEPOvDl.jpg',
-               name: 'D.intermedia anthocyanine free',
-               price: '8,000원/15-20seeds'
-           },
-           {
-               image: 'https://imgur.com/L5pt6N6.jpg',
-               name: 'D. spatulata var gympiensis',
-               price: '8,000원/15-20seeds'
-           },
-           {
-               image: 'https://imgur.com/Thr4a23.jpg',
-               name: 'D. lactifolia',
-               price: '10,000원/10-15seeds'
-           },
-           {
-               image: './images/seed_3.jpg',
-               name: 'D. filiformis Red',
-               price: '10,000원/30-40seeds'
-           },
-           {
-               image: 'https://imgur.com/MjoX01d.jpg',
-               name: 'D sp Triffid Vivid',
-               price: '8,000원/20seeds'
-           },
-           {
-               image: 'https://imgur.com/OR2cRZe.jpg',
-               name: 'D sp Botswana',
-               price: '8,000원/15-20seeds'     
-           },
-           {
-               image: 'https://imgur.com/Or2Fddx.jpg',
-               name: 'D serpens pink flowers',
-               price: '준비중/15-20seeds'
-           },
-           {
-               image: './images/seed_3.jpg',
-               name: 'N. benstonei,hispida',
-               price: '10,000원/15seeds'
-           },
-           {
-               image: 'https://imgur.com/eCQRH2p.jpg',
- 이름: '디오네아 거울',
- 가격: '10,000 원/10 seeds'
- },
- {
- 이미지: 'https://imgur.com/KrSyAfF.jpg',
- 이름: '디오네아 톱 이빨',
- 가격: '10,000 원/15 seeds'
- },
- {
- 이미지: 'https://imgur.com/RD4OAIc.jpg',
- 이름: '디오네아 아카이 류',
- 가격: '10,000 원/15 seeds'
- },
- {
- 이미지: 'https://imgur.com/Tu8We6C.jpg',
- name: 'Dionaea B52 x B52',
- 가격: '10,000 원/20 seeds'
- },
- {
- 이미지: 'https://imgur.com/nNvpQ7x.jpg',
- 이름: '디오네아 슈펜슈틸',
- 가격: '10,000 원/10 seeds'
- },
- {
- 이미지: 'https://imgur.com/FBSzOzT.jpg',
- 이름: '디오네아 올 그린',
- 가격: '10,000 원/10 seeds'
- }
- ]
- },
- 'supplies': {
- title: '원예재제, 생수태',
- 제품: [
- {
- 이미지: 'https://imgur.com/ukJkxJc.jpg',
- name: '생수태',
- 가격: '10,000 원'
- },
- {
- 이미지: './.images/supplies_2.jpg',
- 이름: '질석(진피석)',
- 가격: '20 x 25cm 지퍼백, 3,000 원'
- },
- {
- 이미지: './.images/supplies_3.jpg',
- name: '피트모스 배양토',
- 가격: '20 x 25cm 지퍼백, 3,000 원'
- },
- {
- 이미지: './.images/supplies_3.jpg',
- name: '펄라이트',
- 가격: '20 x 25cm 지퍼백, 3,000 원'
- },
- {
- 이미지: './.images/supplies_4.jpg',
- 이름: '포트 직경10cm',
- 가격: '5 개 1,000 원'
- },
- {
- 이미지: './.images/supplies_5.jpg',
- 이름: '수반',
- 가격: '300 원/개'
- },
- {
- 이미지: './.images/supplies_6.jpg',
- name: '하이포넥스(식물영양제)',
- 가격: '2,000 원/10g'
- }
- ]
- }
-};
-       };
-   </script>
-</body>
-</html>
+
+export default PlantMart;
