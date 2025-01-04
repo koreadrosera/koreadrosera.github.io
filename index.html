@@ -43,80 +43,49 @@ const categoryData = {
         image: 'https://i.imgur.com/vzDXObs.jpg',
         name: 'GJ Giant Cudo',
         price: '55,000원'
-      },
-      {
-        image: 'https://i.imgur.com/Wsjaf50.jpg',
-        name: 'Scarlatine',
-        price: '55,000원'
-      },
-      {
-        image: 'https://i.imgur.com/OOHmme9.jpg',
-        name: 'Trev s Dracula',
-        price: '45,000원'
-      },
-      {
-        image: 'https://i.imgur.com/QeuYkDt.jpg',
-        name: 'Korean Melody Shark',
-        price: '40,000원'
-      },
-      {
-        image: 'https://i.imgur.com/Zjet1eI.jpg',
-        name: 'Biohazard',
-        price: '45,000원'
-      },
-      {
-        image: 'https://i.imgur.com/sJQ2oCk.jpg',
-        name: 'Bristletooth',
-        price: '50,000원'
-      },
-      {
-        image: 'https://i.imgur.com/i3wcdrx.jpg',
-        name: 'Fused Tooth',
-        price: '준비중.'
-      },
-      {
-        image: 'https://i.imgur.com/wvUZhqM.jpg',
-        name: 'Cupped trap',
-        price: '40,000원'
-      },
-      {
-        image: 'https://i.imgur.com/uMDH9hh.jpg',
-        name: 'Schupenstiel',
-        price: '45,000원'
-      },
-      {
-        image: 'https://i.imgur.com/xHSNPDd.jpg',
-        name: 'Rose(No trap)',
-        price: '40,000원'
-      },
-      {
-        image: 'https://i.imgur.com/IqcDIk8.jpg',
-        name: 'Coquillage',
-        price: '45,000원'
-      },
-      {
-        image: 'https://i.imgur.com/iXnez7X.jpg',
-        name: 'Fuzzy Tooth',
-        price: '40,000원'
-      },
-      {
-        image: 'https://i.imgur.com/xyRIXsa.jpg',
-        name: 'Mirror',
-        price: '45,000원'
-      },
-      {
-        image: 'https://i.imgur.com/FWyPQtU.jpg',
-        name: 'Angel wings',
-        price: '45,000원'
-      },
-      {
-        image: 'https://i.imgur.com/3jbmG2M.jpg',
-        name: 'Saw Tooth',
-        price: '45,000원'
       }
     ]
   },
-  // ... 나머지 카테고리들도 같은 형식으로 추가
+  'flytrap2': {
+    title: '파리지옥2',
+    products: [
+      {
+        image: 'https://i.imgur.com/fpTpBcw.jpg',
+        name: 'DCXL',
+        price: '40,000원'
+      },
+      {
+        image: 'https://i.imgur.com/d57WhSf.jpg',
+        name: 'Wacky Traps',
+        price: '50,000원'
+      },
+      {
+        image: 'https://i.imgur.com/vFLzIha.jpg',
+        name: 'Buttcheeks',
+        price: '50,000원'
+      }
+    ]
+  },
+  'sundew': {
+    title: '끈끈이주걱',
+    products: [
+      {
+        image: 'https://imgur.com/OTcv1lh.jpg',
+        name: 'Latifolia',
+        price: '45,000원'
+      },
+      {
+        image: 'https://imgur.com/EE401G4.jpg',
+        name: 'Regia',
+        price: '55,000원'
+      },
+      {
+        image: 'https://imgur.com/HkzKvco.jpg',
+        name: 'Hamiltonii',
+        price: '25,000원'
+      }
+    ]
+  },
   'care': {
     title: '식충식물재배책',
     products: [
@@ -128,23 +97,21 @@ const categoryData = {
     ]
   }
 };
-
+// categoryData 객체를 따로 작성
 const PlantMart = () => {
   const [currentCategory, setCurrentCategory] = useState(null);
-
+  
   const Navigation = () => (
     <nav className="bg-white border-b border-gray-200 py-5">
       <h1 className="text-2xl text-center mb-4">식충식물마트</h1>
-      <div className="flex flex-wrap gap-2 justify-center px-4 max-w-7xl mx-auto">
-        {Object.entries(categoryData).map(([id, category]) => (
+      <div className="flex flex-wrap gap-2 justify-center px-4 max-w-7xl mx-auto overflow-x-auto py-2">
+        {Object.entries(categoryData).map(([id, data]) => (
           <button
             key={id}
-            onClick={() => setCurrentCategory({ id, name: category.title })}
-            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm hover:bg-gray-200 transition-colors whitespace-nowrap ${
-              currentCategory?.id === id ? 'bg-gray-800 text-white' : ''
-            }`}
+            onClick={() => setCurrentCategory({ id, name: data.title })}
+            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm hover:bg-gray-200 transition-colors whitespace-nowrap ${currentCategory?.id === id ? 'bg-gray-800 text-white' : ''}`}
           >
-            {category.title}
+            {data.title}
           </button>
         ))}
       </div>
@@ -217,30 +184,30 @@ const PlantMart = () => {
       <Navigation />
       
       <main className="flex-1 max-w-7xl mx-auto w-full px-4">
-        {!currentCategory ? (
-          <OrderGuide />
-        ) : (
-          <>
-            <h2 className="text-2xl text-center text-gray-800 my-5">
-              {currentCategoryData?.title}
-            </h2>
-            <CategoryDescription 
-              description={currentCategoryData?.description}
-              description2={currentCategoryData?.description2}
-              description3={currentCategoryData?.description3}
+ {!현재 카테고리 ?
+ <주문 가이드 />
+ ) : (
+ <>
+ <h2 className="text-2xl text-center text-gray-800 my-5">
+ 현재 카테고리 데이터?제목}
+ </h2>
+ <카테고리설명 
+ description={currentCategoryData?}설명}
+ description2={currentCategoryData?}설명2}
+ description3={currentCategoryData?}설명3}
             />
-            {currentCategoryData?.products ? (
-              <ProductList products={currentCategoryData.products} />
-            ) : (
-              <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
-            )}
-            <OrderGuide />
-          </>
-        )}
-        {currentCategory && <HomeButton />}
-      </main>
-    </div>
-  );
+ 현재 카테고리 데이터?제품? (
+ <ProductList products={currentCategoryData.products} />
+ ) : (
+ <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
+ )}
+ <주문 가이드 />
+ </>
+ )}
+ {현재 카테고리 & & <홈 버튼 />}
+ </메인>
+ </div>
+ );
 };
 
-export default PlantMart;
+기본 PlantMart 내보내기;
