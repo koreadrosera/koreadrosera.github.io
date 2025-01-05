@@ -69,7 +69,9 @@ const PlantMart = () => {
           <button
             key={id}
             onClick={() => setCurrentCategory({ id, name: data.title })}
-            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm hover:bg-gray-200 transition-colors whitespace-nowrap ${currentCategory?.id === id ? 'bg-gray-800 text-white' : ''}`}
+            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm ${
+              currentCategory?.id === id ? 'bg-gray-800 text-white' : 'hover:bg-gray-200'
+            } transition-colors whitespace-nowrap`}
           >
             {data.title}
           </button>
@@ -144,30 +146,30 @@ const PlantMart = () => {
       <Navigation />
       
       <main className="flex-1 max-w-7xl mx-auto w-full px-4">
-        {!currentCategory ? (
-          <OrderGuide />
-        ) : (
-          <>
-            <h2 className="text-2xl text-center text-gray-800 my-5">
-              {currentCategoryData?.title}
-            </h2>
-            <CategoryDescription 
-              description={currentCategoryData?.description}
-              description2={currentCategoryData?.description2}
-              description3={currentCategoryData?.description3}
+ {!현재 카테고리 ?
+ <주문 가이드 />
+ ) : (
+ <>
+ <h2 className="text-2xl text-center text-gray-800 my-5">
+ 현재 카테고리 데이터?제목}
+ </h2>
+ <카테고리설명 
+ description={currentCategoryData?}설명}
+ description2={currentCategoryData?}설명2}
+ description3={currentCategoryData?}설명3}
             />
-            {currentCategoryData?.products ? (
-              <ProductList products={currentCategoryData.products} />
-            ) : (
-              <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
-            )}
-            <OrderGuide />
-          </>
-        )}
-        {currentCategory && <HomeButton />}
-      </main>
-    </div>
-  );
+ 현재 카테고리 데이터?제품? (
+ <ProductList products={currentCategoryData.products} />
+ ) : (
+ <p className="text-center text-gray-500 py-10">준비 중입니다.</p>
+ )}
+ <주문 가이드 />
+ </>
+ )}
+ {현재 카테고리 & & <홈 버튼 />}
+ </메인>
+ </div>
+ );
 };
 
-export default PlantMart;
+기본 PlantMart 내보내기;
