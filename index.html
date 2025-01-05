@@ -69,7 +69,7 @@ const PlantMart = () => {
           <button
             key={id}
             onClick={() => setCurrentCategory({ id, name: data.title })}
-            className={`bg-gray-100 rounded px-4 py-2 min-w-[120px] text-sm ${
+            className={`bg-gray-100 px-4 py-2 min-w-[120px] text-sm ${
               currentCategory?.id === id ? 'bg-gray-800 text-white' : 'hover:bg-gray-200'
             } transition-colors whitespace-nowrap`}
           >
